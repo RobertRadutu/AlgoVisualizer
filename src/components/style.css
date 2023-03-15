@@ -1,0 +1,23 @@
+h1 {
+    text-align: center;
+}
+p{
+    font-weight: bold;
+}
+
+.container {
+    padding: 4rem;
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+    align-items: center;
+    max-width: 1120px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.imagePosition {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
