@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import {
-  Route,
-  NavLink,
-  HashRouter
-} from "react-router-dom";
-import { Routes } from "react-router-dom/dist";
-import Grid from "./grid/grid";
+import Grid from "./grid/PathfindingVisualizer";
+
+var algo = "";
  
 const DropDown = () => {
   const [open, setOpen] = React.useState(false);
@@ -15,10 +11,12 @@ const DropDown = () => {
   };
 
   const handleMenuOne = () => {
+    algo = "dijkstra";
     setOpen(false);
   }
 
   const handleMenuTwo = () => {
+    algo = "a*";
     setOpen(false);
   }
 
@@ -53,16 +51,21 @@ const Dropdown = ({ open, trigger, menu }) => {
 class Algorithms extends Component {
   constructor(props){  
     super(props);  
+    this.state = "";
   }
 
+  onHandleChange(){
+    this.setState(algo);
+    console.log(algo);
+  }
   render() {
     return (
       <div className="bodyAlgorithm">
-        <DropDown></DropDown>
-        <Grid></Grid>
+        <DropDown onChange ={this.onHandleChange}></DropDown>
+        <Grid algorithm = {this.state}></Grid>
       </div>
     );
   }
 }
- 
+
 export default Algorithms;
