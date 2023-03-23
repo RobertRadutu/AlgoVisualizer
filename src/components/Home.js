@@ -5,7 +5,7 @@ class Home extends Component {
   render() {
     return (
       <div >
-        <div className="container">
+        <div className="containertext">
         <h2>HELLO!</h2>
         <br></br>
         <h2>Welcome to Pathfinding Visualizer!</h2>
