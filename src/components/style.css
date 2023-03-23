@@ -5,7 +5,7 @@ p{
     font-weight: bold;
 }
 
-.container {
+ .containertext {
     padding: 4rem;
     display: flex;
     flex-flow: column;
@@ -60,4 +60,4 @@ p{
     margin: 0;
     font: inherit;
     cursor: pointer;
-  }
+  } 
