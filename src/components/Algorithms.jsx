@@ -1,28 +1,29 @@
 import React, { Component } from "react";
 import Grid from "./grid/PathfindingVisualizer";
-
-var algo = "";
  
 const DropDown = () => {
   const [open, setOpen] = React.useState(false);
+  const [algrithm, setAlgorithm] = React.useState("")
 
   const handleOpen = () => {
+    setAlgorithm("");
     setOpen(!open);
   };
 
   const handleMenuOne = () => {
-    algo = "dijkstra";
+    setAlgorithm("Dijkstra");
     setOpen(false);
   }
 
   const handleMenuTwo = () => {
-    algo = "a*";
+    setAlgorithm("A*");
     setOpen(false);
   }
 
   return (
     <Dropdown
       open={open}
+      algorithm={algrithm}
       trigger={<button onClick={handleOpen}>Choose the algorithm you want to visualize</button>}
       menu={[
         <button onClick={handleMenuOne}>Dijkstra</button>,
@@ -32,7 +33,7 @@ const DropDown = () => {
   );
 };
 
-const Dropdown = ({ open, trigger, menu }) => {
+const Dropdown = ({ open, algorithm, trigger, menu }) => {
   return (
     <div className="dropdown">
       {trigger}
@@ -43,6 +44,7 @@ const Dropdown = ({ open, trigger, menu }) => {
           ))}
         </ul>
       ) : null}
+       <Grid algorithm = {algorithm}></Grid>
     </div>
   );
 };
@@ -51,18 +53,12 @@ const Dropdown = ({ open, trigger, menu }) => {
 class Algorithms extends Component {
   constructor(props){  
     super(props);  
-    this.state = "";
   }
 
-  onHandleChange(){
-    this.setState(algo);
-    console.log(algo);
-  }
   render() {
     return (
       <div className="bodyAlgorithm">
-        <DropDown onChange ={this.onHandleChange}></DropDown>
-        <Grid algorithm = {this.state}></Grid>
+        <DropDown></DropDown>
       </div>
     );
   }

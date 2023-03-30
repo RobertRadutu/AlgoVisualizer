@@ -40,6 +40,8 @@ export default class PathfindingVisualizer extends Component {
     this.setState({mouseIsPressed: false});
   }
 
+
+  //Dijkstra related functions
   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
@@ -74,6 +76,12 @@ export default class PathfindingVisualizer extends Component {
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
+//---------------------------------
+
+  displayAlgorithm(algorithm){
+    if(algorithm == "Dijkstra")
+      this.visualizeDijkstra();
+  }
 
   render() {
     const {grid, mouseIsPressed} = this.state;
@@ -82,11 +90,7 @@ export default class PathfindingVisualizer extends Component {
     } = this.props;
     return (
       <>
-        <button onClick={() => this.visualizeDijkstra()}>
-          Visualize Dijkstra's Algorithm
-        </button>
-        <div className="grid">
-          <div> Hello, algorithm is {algorithm}</div>
+        <div className="boxGrid">
           {grid.map((row, rowIdx) => {
             return (
               <div key={rowIdx}>
@@ -111,6 +115,7 @@ export default class PathfindingVisualizer extends Component {
               </div>
             );
           })}
+          {this.displayAlgorithm(algorithm)}
         </div>
       </>
     );
@@ -121,7 +126,7 @@ const getInitialGrid = () => {
   const grid = [];
   for (let row = 0; row < 20; row++) {
     const currentRow = [];
-    for (let col = 0; col < 50; col++) {
+    for (let col = 0; col < 55; col++) {
       currentRow.push(createNode(col, row));
     }
     grid.push(currentRow);
