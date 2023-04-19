@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Grid from "./grid/PathfindingVisualizer";
- 
 const DropDown = () => {
   const [open, setOpen] = React.useState(false);
   const [algrithm, setAlgorithm] = React.useState("")
@@ -8,7 +7,7 @@ const DropDown = () => {
   const handleOpen = () => {
     setAlgorithm("");
     setOpen(!open);
-  };
+  }
 
   const handleMenuOne = () => {
     setAlgorithm("Dijkstra");
@@ -21,15 +20,15 @@ const DropDown = () => {
   }
 
   return (
-    <Dropdown
-      open={open}
-      algorithm={algrithm}
-      trigger={<button onClick={handleOpen}>Choose the algorithm you want to visualize</button>}
-      menu={[
-        <button onClick={handleMenuOne}>Dijkstra</button>,
-        <button onClick={handleMenuTwo}>A*</button>,
-      ]}
-    />
+       <Dropdown
+          open={open}
+          algorithm={algrithm}
+          trigger={<button onClick={handleOpen}>Choose the algorithm you want to visualize</button>}
+          menu={[
+            <button onClick={handleMenuOne}>Dijkstra</button>,
+            <button onClick={handleMenuTwo}>A*</button>,
+          ]}
+       />
   );
 };
 
@@ -50,7 +49,7 @@ const Dropdown = ({ open, algorithm, trigger, menu }) => {
 };
 
 
-class Algorithms extends Component {
+export class Algorithms extends Component {
   constructor(props){  
     super(props);  
   }

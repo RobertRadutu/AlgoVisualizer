@@ -2,9 +2,11 @@ import React, {Children, Component} from 'react';
 import { useState } from 'react';
 import Node from './node/node';
 import {dijkstra, getNodesInShortestPathOrder, visualizeDijkstra} from "../algo/dijkstra";
+import {astar} from "../algo/astar";
 import './grid.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Algorithms';
+
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 15;
@@ -73,14 +75,37 @@ export default class PathfindingVisualizer extends Component {
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 //---------------------------------
 
+
+
+visualizeAstar(){
+  const {grid} = this.state;
+  const startNode = grid[START_NODE_ROW][START_NODE_COL];
+  const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+  const visitedNodesInOrder = astar(grid, startNode, finishNode);
+  if(visitedNodesInOrder.length == 0)return;
+  this.animateDijkstra(visitedNodesInOrder, visitedNodesInOrder);
+}
+
+
+//-----------------------------------
   displayAlgorithm(algorithm){
-    if(algorithm == "Dijkstra")
+    if(algorithm == "Dijkstra"){
+      regenerateGrid(this.state.grid);
       this.visualizeDijkstra();
+    }
+      
+    else if(algorithm == "A*")
+    {
+      regenerateGrid(this.state.grid);
+      this.visualizeAstar();
+    }
+      
   }
 
   render() {
@@ -147,6 +172,18 @@ const createNode = (col, row) => {
   };
 };
 
+const regenerateGrid = (newGrid) => {
+  for(let i = 0; i < 20; i++){
+    for(let j = 0; j < 55; j++)
+      if(newGrid[i][j].isFinish == false && newGrid[i][j].isStart == false && newGrid[i][j].isWall == false)
+      {
+        document.getElementById(`node-${i}-${j}`).className =
+          'node';
+      }
+  }
+  return newGrid;
+}
+
 const getNewGridWithWallToggled = (grid, row, col) => {
   const newGrid = grid.slice();
   const node = newGrid[row][col];
@@ -155,5 +192,5 @@ const getNewGridWithWallToggled = (grid, row, col) => {
     isWall: !node.isWall,
   };
   newGrid[row][col] = newNode;
-  return newGrid;
+  return regenerateGrid(newGrid);
 };
