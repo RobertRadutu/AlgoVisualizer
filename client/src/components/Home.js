@@ -9,11 +9,10 @@ class Home extends Component {
         <h2>HELLO!</h2>
         <br></br>
         <h2>Welcome to Pathfinding Visualizer!</h2>
-        <h3>This short tutorial will walk you through all of the features of this application.</h3>
-            <p>If you want to dive right in, feel free to press the "Skip Tutorial" button below. Otherwise, press "Next"!</p>
-        <p>This is an interactive algorithm visualization tool for path-finding and sorting algorithms! </p>
- 
-            <p>Have fun!</p>
+        <h4>This is an interactive algorithm visualization tool for path-finding and sorting algorithms! </h4>
+            <h5>If you want to dive right in, feel free to go to the Algorithms Visualization page. Make sure to leave us a message on the Forum page, by creating a post!</h5>
+            <h5>P.S. Check out our Informations page for FAQs.</h5>
+            <h3>Have fun!</h3>
             </div>
       </div>
     );

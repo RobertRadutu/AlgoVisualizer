@@ -61,3 +61,7 @@ p{
     font: inherit;
     cursor: pointer;
   } 
+
+  .form-control.light-green-text-field {
+    background-color: #ccffcc; /* Adjust the color to your preference */
+}
