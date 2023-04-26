@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import "../style.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {MdAdsClick} from "react-icons/md";
+
 const UpdatePost = props => {
     useEffect(() => {
         AOS.init({
@@ -99,6 +101,7 @@ const UpdatePost = props => {
         <div className="container pb-5">
               <div data-aos="fade-up">
             <br />
+            <MdAdsClick color="green" size={50} />
             <h2>UPDATE POST</h2>
             {showUpdateForm()}
             </div>

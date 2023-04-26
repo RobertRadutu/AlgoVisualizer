@@ -3,6 +3,8 @@ import "../style.css";
 import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {MdAddTask} from "react-icons/md";
+
 const Create = () => {
     useEffect(() => {
         AOS.init({
@@ -51,6 +53,7 @@ const Create = () => {
     return (
         <div className="container p-5">
             <div data-aos="fade-up">
+            <MdAddTask color="green" size={50} />
             <h2>CREATE POST</h2>
             <br />
             <form onSubmit={handleSubmit}>

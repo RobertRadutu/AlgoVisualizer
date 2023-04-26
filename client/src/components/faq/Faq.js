@@ -19,9 +19,8 @@ const Faq = () => {
           <MdOutlineLibraryBooks color="orangered" size={30} />
           <h2>FAQs</h2>
           <p className="u-text-small">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique
-            itaque veniam laudantium, quam quas dolor tempora eligendi officia
-            sequi. Iusto.
+          To get started, here are some frequently asked questions that can help you better understand what our website has to offer.
+           If you have any additional questions, please don't hesitate to contact us.
           </p>
         </div>
         <div className="questions">

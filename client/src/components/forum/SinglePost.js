@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { useParams } from 'react-router-dom';
 import axios from "axios";
-
+import "../style.css";
+import {MdComment} from "react-icons/md";
 const SinglePost = props => {
 
      let params = useParams();
@@ -15,8 +16,7 @@ const SinglePost = props => {
     }, []);
 
     return(
-        <div className="container pb-5">
-            <br />
+        <div className="container pb-5" style={{ wordWrap: 'break-word' }}>
             <h1>{post.title}</h1>
             <hr />
             <p className="lead">{post.content}</p>
@@ -25,6 +25,7 @@ const SinglePost = props => {
                             <span className="badge" style={{ fontSize: '15px',  color: 'green'  }}>{new Date(post.createdAt).toLocaleString()}</span>
                         </p>
         </div>
+ 
     )
 
 }
