@@ -173,6 +173,7 @@ const createNode = (col, row) => {
 };
 
 const regenerateGrid = (newGrid) => {
+  let obj = [];
   for(let i = 0; i < 20; i++){
     for(let j = 0; j < 55; j++)
       if(newGrid[i][j].isFinish == false && newGrid[i][j].isStart == false && newGrid[i][j].isWall == false)
