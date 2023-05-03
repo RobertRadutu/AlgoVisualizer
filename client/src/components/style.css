@@ -65,3 +65,22 @@ p{
   .form-control.light-green-text-field {
     background-color: #ccffcc; /* Adjust the color to your preference */
 }
+
+.main-menu {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.menu-items,
+.login-button {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+ 
+}
+
+.menu-items li,
+.login-button li {
+  margin-right: 10px;
+}

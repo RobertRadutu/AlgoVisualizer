@@ -7,6 +7,7 @@ require('dotenv').config();
 
 // import routes
 const postRoutes = require('./routes/post');
+const authRoutes = require('./routes/auth');
 
 // app
 const app = express();
@@ -29,6 +30,7 @@ app.use(bodyParser.json());
 
 // route middleware
 app.use('/api', postRoutes);
+app.use('/api', authRoutes);
 
 // port
 const port = process.env.PORT || 5000;
