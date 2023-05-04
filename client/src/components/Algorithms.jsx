@@ -57,7 +57,7 @@ export class Algorithms extends Component {
   render() {
     return (
       <div className="bodyAlgorithm">
-        <DropDown></DropDown>
+        <DropDown className="meniu"></DropDown>
       </div>
     );
   }
