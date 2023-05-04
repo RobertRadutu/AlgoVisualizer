@@ -30,11 +30,11 @@ p{
 
 
 .dropdown {
-    position: relative;
+    position: absolute;
   }
   
   .menu {
-    position: absolute;
+    position: relative;
     list-style-type: none;
     padding: 0;
     width: 320px;

@@ -7,7 +7,6 @@ import './grid.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Algorithms';
 
-
 const START_NODE_ROW = 10;
 const START_NODE_COL = 15;
 const FINISH_NODE_ROW = 10;
@@ -28,13 +27,23 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseDown(row, col) {
-    const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+    const object = this.props.object;
+    let newGrid = []
+    if(object == "wall")
+      newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+    else
+      newGrid = getNewGridWithStopToggled(this.state.grid, row, col);
     this.setState({grid: newGrid, mouseIsPressed: true});
   }
 
   handleMouseEnter(row, col) {
+    const object = this.props.object;
     if (!this.state.mouseIsPressed) return;
-    const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+    let newGrid = [];
+    if(object == "wall")
+      newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+    else
+      newGrid = getNewGridWithStopToggled(this.state.grid, row, col);
     this.setState({grid: newGrid});
   }
 
@@ -120,7 +129,7 @@ visualizeAstar(){
             return (
               <div key={rowIdx}>
                 {row.map((node, nodeIdx) => {
-                  const {row, col, isFinish, isStart, isWall} = node;
+                  const {row, col, isFinish, isStart, isWall, isStop} = node;
                   return (
                     <Node
                       key={nodeIdx}
@@ -128,6 +137,7 @@ visualizeAstar(){
                       isFinish={isFinish}
                       isStart={isStart}
                       isWall={isWall}
+                      isStop={isStop}
                       mouseIsPressed={mouseIsPressed}
                       onMouseDown={(row, col) => this.handleMouseDown(row, col)}
                       onMouseEnter={(row, col) =>
@@ -168,6 +178,7 @@ const createNode = (col, row) => {
     distance: Infinity,
     isVisited: false,
     isWall: false,
+    isStop: false,
     previousNode: null,
   };
 };
@@ -176,7 +187,7 @@ const regenerateGrid = (newGrid) => {
   let obj = [];
   for(let i = 0; i < 20; i++){
     for(let j = 0; j < 55; j++)
-      if(newGrid[i][j].isFinish == false && newGrid[i][j].isStart == false && newGrid[i][j].isWall == false)
+      if(newGrid[i][j].isFinish == false && newGrid[i][j].isStart == false && newGrid[i][j].isWall == false && newGrid[i][j].isStop == false)
       {
         document.getElementById(`node-${i}-${j}`).className =
           'node';
@@ -190,7 +201,22 @@ const getNewGridWithWallToggled = (grid, row, col) => {
   const node = newGrid[row][col];
   const newNode = {
     ...node,
+    isStop: false,
     isWall: !node.isWall,
+  };
+  newGrid[row][col] = newNode;
+  return regenerateGrid(newGrid);
+};
+
+
+//This is when trying to add a stop , generating a new grid
+const getNewGridWithStopToggled = (grid, row, col) => {
+  const newGrid = grid.slice();
+  const node = newGrid[row][col];
+  const newNode = {
+    ...node,
+    isWall: false,
+    isStop: !node.isStop,
   };
   newGrid[row][col] = newNode;
   return regenerateGrid(newGrid);
