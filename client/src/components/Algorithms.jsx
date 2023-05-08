@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Grid from "./grid/PathfindingVisualizer";
 import {useState, useEffect} from "react";
+
+let algo = "";
+
 const DropDown = ({className, object}) => {
   const [open, setOpen] = React.useState(false);
   const [algrithm, setAlgorithm] = React.useState("")
@@ -13,11 +16,13 @@ const DropDown = ({className, object}) => {
   const handleMenuOne = () => {
     setAlgorithm("Dijkstra");
     setOpen(false);
+    algo = "Dijkstra";
   }
 
   const handleMenuTwo = () => {
     setAlgorithm("A*");
     setOpen(false);
+    algo = "A*";
   }
 
   return (
@@ -47,7 +52,6 @@ const Dropdown = ({ open, algorithm, trigger, menu, object }) => {
           ))}
         </ul>
       ) : null}
-      <Grid algorithm = {algorithm} object = {object}></Grid>
     </div>
   );
 };
@@ -57,7 +61,8 @@ export class Algorithms extends Component {
   constructor(props){  
     super(props);  
     this.state = {
-      object:"wall"
+      object:"wall",
+      pressed: false,
     }
   }
 
@@ -66,7 +71,10 @@ export class Algorithms extends Component {
       <div className="bodyAlgorithm">
         <button onClick={() => this.setState({ object :"wall" })}> Add Wall </button>
         <button onClick={() => this.setState({ object: "stop" })}> Add Stop </button>
+        <button onClick={() => this.setState({ pressed: true })}> Start </button>
         <DropDown className="meniu" object = {this.state.object}></DropDown>
+        <Grid algorithm = {algo} object = {this.state.object} pressed = {this.state.pressed}></Grid>
+        {this.state.pressed = false}
       </div>
     );
   }

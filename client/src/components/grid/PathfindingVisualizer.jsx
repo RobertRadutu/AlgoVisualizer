@@ -1,11 +1,13 @@
 import React, {Children, Component} from 'react';
 import { useState } from 'react';
+import {useEffect} from 'react';
 import Node from './node/node';
 import {dijkstra, getNodesInShortestPathOrder, visualizeDijkstra} from "../algo/dijkstra";
 import {astar} from "../algo/astar";
 import './grid.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Algorithms';
+import Algorithms from '../Algorithms';
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 15;
@@ -33,7 +35,7 @@ export default class PathfindingVisualizer extends Component {
       newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
     else
       newGrid = getNewGridWithStopToggled(this.state.grid, row, col);
-    this.setState({grid: newGrid, mouseIsPressed: true});
+    this.setState({grid: newGrid, mouseIsPressed: true}); 
   }
 
   handleMouseEnter(row, col) {
@@ -51,71 +53,123 @@ export default class PathfindingVisualizer extends Component {
     this.setState({mouseIsPressed: false});
   }
 
+  delay(time){
+    return new Promise((resolve)=>setTimeout(resolve,time)
+  )
+}
 
   //Dijkstra related functions
-  animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder, lastAmount) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
-          this.animateShortestPath(nodesInShortestPathOrder);
-        }, 10 * i);
+          this.animateShortestPath(nodesInShortestPathOrder, lastAmount);
+        }, 50 * (i+1 + lastAmount));
         return;
       }
       setTimeout(() => {
         const node = visitedNodesInOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           'node node-visited';
-      }, 10 * i);
+      }, 50 * (i+1 + lastAmount));
     }
   }
 
-  animateShortestPath(nodesInShortestPathOrder) {
+   animateShortestPath(nodesInShortestPathOrder, lastAmount) {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           'node node-shortest-path';
-      }, 50 * i);
+      }, 100 * (i + lastAmount));
     }
   }
 
-  visualizeDijkstra() {
+  visualizeDijkstra(startNode, finishNode, lastAmount) {
     const {grid} = this.state;
-    const startNode = grid[START_NODE_ROW][START_NODE_COL];
-    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
     
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder, lastAmount);
+    return visitedNodesInOrder.length;
   }
 //---------------------------------
 
 
 
-visualizeAstar(){
-  const {grid} = this.state;
-  const startNode = grid[START_NODE_ROW][START_NODE_COL];
-  const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-  const visitedNodesInOrder = astar(grid, startNode, finishNode);
-  if(visitedNodesInOrder.length == 0)return;
-  this.animateDijkstra(visitedNodesInOrder, visitedNodesInOrder);
+ visualizeAstar(startNode, finishNode, lastAmount){
+    const {grid} = this.state;
+    const visitedNodesInOrder = astar(grid, startNode, finishNode);
+    if(visitedNodesInOrder.length == 0)return;
+    this.animateDijkstra(visitedNodesInOrder, visitedNodesInOrder, lastAmount);
+    return visitedNodesInOrder.length;
 }
 
 
 //-----------------------------------
-  displayAlgorithm(algorithm){
-    if(algorithm == "Dijkstra"){
-      regenerateGrid(this.state.grid);
-      this.visualizeDijkstra();
-    }
-      
-    else if(algorithm == "A*")
-    {
-      regenerateGrid(this.state.grid);
-      this.visualizeAstar();
-    }
-      
+
+checkAlgo(algorithm, startNode, finishNode, lastAmount){
+  let time = 100000;
+  if(algorithm == "Dijkstra"){
+    //regenerateGrid(this.state.grid);
+    lastAmount = lastAmount + this.visualizeDijkstra(startNode, finishNode, lastAmount);
   }
+  else if(algorithm == "A*")
+  {
+  // regenerateGrid(this.state.grid);
+    lastAmount = lastAmount + this.visualizeAstar(startNode, finishNode, lastAmount);
+  }
+    return lastAmount;
+}
+
+displayAlgorithm(algorithm){
+    
+    if(this.props.pressed == true){
+      const newGrid = this.state.grid;
+
+      let queue = [];
+      for(let i = 0; i < 20; i++){
+        for(let j = 0; j < 55; j++)
+          if(newGrid[i][j].isStop == true)
+          {
+            queue.push(newGrid[i][j]);
+          }
+      }
+
+      let startNode = newGrid[START_NODE_ROW][START_NODE_COL];
+      let finishNode;
+      let lastAmount = 0;
+      while(queue.length != 0){
+        let minDist = 1000000000;
+        let index = -1;
+        //find the closes node relative to the starting node
+        for(let i = 0; i<queue.length; i++){
+          let x = queue[i].row;
+          let y = queue[i].col;
+          let dist = Math.sqrt((x - startNode.row) * (x - startNode.row) + (y - startNode.col) * (y - startNode.col));
+          if(dist < minDist){
+              minDist = dist;
+              index = i;
+            }
+        // console.log(x, y);
+          }
+        finishNode = queue[index];
+        //shorten the array
+        // let aux = queue[index+1];
+        // queue = queue.slice(0, index).concat(aux);
+        queue = queue.filter(function (v) {
+          return v != finishNode;
+        });
+        
+        lastAmount = this.checkAlgo(algorithm, startNode, finishNode, lastAmount);
+
+        startNode = finishNode;
+        
+      }
+      finishNode = newGrid[FINISH_NODE_ROW][FINISH_NODE_COL];
+      lastAmount = this.checkAlgo(algorithm, startNode, finishNode, lastAmount);
+  }
+}
 
   render() {
     const {grid, mouseIsPressed} = this.state;
@@ -150,7 +204,9 @@ visualizeAstar(){
               </div>
             );
           })}
-          {this.displayAlgorithm(algorithm)}
+          {
+            this.displayAlgorithm(algorithm)
+          }
         </div>
       </>
     );
