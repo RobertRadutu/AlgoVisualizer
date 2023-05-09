@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate  } from 'react-router-dom';
 import "../style.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {MdAdsClick} from "react-icons/md";
 
 const UpdatePost = props => {
+    const navigate = useNavigate();
     useEffect(() => {
         AOS.init({
           duration: 1000,
@@ -48,6 +49,7 @@ const UpdatePost = props => {
                 setState({ ...state, title, content, slug, user });
                 // show sucess alert
                 alert(`Post titled ${title} is updated`);
+                navigate('/Forum');
             })
             .catch(error => {
                 console.log(error.response);

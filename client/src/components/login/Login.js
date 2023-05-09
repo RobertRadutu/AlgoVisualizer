@@ -8,14 +8,17 @@ import { authenticate } from './helpers';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from "../AuthContext";
 
-const Login = () => {
+const Login = ({ onLogin }) => {
+
     useEffect(() => {
         AOS.init({
           duration: 1000,
         });
       }, []);
+
       let params = useParams();
       const navigate = useNavigate();
+      
     // create a state
     const [state, setState] = useState({
         name: '',
@@ -23,32 +26,55 @@ const Login = () => {
     });
     const { name, password } = state; // destructure values from state
     const { setIsLoggedIn } = useContext(AuthContext);
+
     // onchange event handler
     const handleChange = name => event => {
         // console.log('name', name, 'event', event.target.value);
         setState({ ...state, [name]: event.target.value });
     };
 
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     console.table({ name, password });
+    //     axios
+    //     .post(`${process.env.REACT_APP_API}/login`, { name, password })
+    //     .then((response) => {
+    //       console.log(response);
+    //       authenticate(response, () => {
+    //         navigate("/CreatePost");
+    //         setIsLoggedIn(true); // Use setIsLoggedIn from context
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       console.log(error.response);
+    //       alert(error.response.data);
+    //     });
+    // };
+    
+
     const handleSubmit = (event) => {
         event.preventDefault();
         console.table({ name, password });
         axios
-        .post(`${process.env.REACT_APP_API}/login`, { name, password })
-        .then((response) => {
-          console.log(response);
-          authenticate(response, () => {
-            navigate("/CreatePost");
-            setIsLoggedIn(true); // Use setIsLoggedIn from context
+          .post(`${process.env.REACT_APP_API}/login`, { name, password })
+          .then((response) => {
+            console.log(response);
+            authenticate(response, () => {
+              navigate("/CreatePost");
+              setIsLoggedIn(true); // Use setIsLoggedIn from context
+            });
+            setState({
+              ...state,
+              name: "",
+              password: "",
+            });
+          })
+          .catch((error) => {
+            console.log(error.response);
+            alert(error.response.data);
           });
-        })
-        .catch((error) => {
-          console.log(error.response);
-          alert(error.response.data);
-        });
-    };
-    
-    
-
+      };
+      
 
     return (
         <div className="container pb-5">
