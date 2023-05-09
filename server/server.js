@@ -8,6 +8,7 @@ require('dotenv').config();
 // import routes
 const postRoutes = require('./routes/post');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 // app
 const app = express();
@@ -31,7 +32,8 @@ app.use(bodyParser.json());
 // route middleware
 app.use('/api', postRoutes);
 app.use('/api', authRoutes);
+app.use('/api', userRoutes);
 
 // port
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8888;
 app.listen(port, () => console.log(`Server is running on port ${port}`));

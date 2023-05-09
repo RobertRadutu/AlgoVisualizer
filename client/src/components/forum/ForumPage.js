@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../style.css";
 import { Link } from 'react-router-dom';
+import { getUser } from '../login/helpers';
 
 const ForumPage = () => {
     const [posts, setPosts] = useState([]);
@@ -57,19 +58,20 @@ const ForumPage = () => {
                                     <span className="badge" style={{ fontSize: '15px',  color: 'green'  }}>{new Date(post.createdAt).toLocaleString()}</span>
                                 </p>
                             </div>
-
-                            <div className="col-md-2">
-                                <Link to={`/post/update/${post.slug}`} className="btn btn-sm btn btn-success ml-1">
-                                    Update
-                                </Link>
-                                {" "}
-                                <button
-                                    onClick={() => deleteConfirm(post.slug)}
-                                    className="btn btn-sm btn-danger ml-1"
-                                >
-                                    Delete
-                                </button>
-                            </div>
+                            {getUser() && (
+                                <div className="col-md-2">
+                                    <Link to={`/post/update/${post.slug}`} className="btn btn-sm btn btn-success ml-1">
+                                        Update
+                                    </Link>
+                                    {" "}
+                                    <button
+                                        onClick={() => deleteConfirm(post.slug)}
+                                        className="btn btn-sm btn-danger ml-1"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
