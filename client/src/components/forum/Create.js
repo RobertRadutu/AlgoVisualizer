@@ -4,13 +4,20 @@ import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {MdAddTask} from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
+import { getUser } from '../login/helpers';
 
 const Create = () => {
+    const navigate = useNavigate();
     useEffect(() => {
         AOS.init({
           duration: 1000,
         });
-      }, []);
+        if (!getUser()) {
+            navigate('/login');
+          }
+      }, [navigate]);
+      
     // state
     const [state, setState] = useState({
         title: '',
