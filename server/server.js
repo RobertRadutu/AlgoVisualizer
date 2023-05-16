@@ -21,19 +21,23 @@ mongoose
         useFindAndModify: false,
         useUnifiedTopology: true
     })
-    .then(() => console.log('DB connected'))
+    .then(() => {
+        console.log('DB connected');
+        
+        // middlewares
+        app.use(cors());
+        app.use(morgan('dev'));
+        app.use(bodyParser.json());
+
+        // route middleware
+        app.use('/api', postRoutes);
+        app.use('/api', authRoutes);
+        app.use('/api', userRoutes);
+
+        // port
+        const port = process.env.PORT || 8889;
+        app.listen(port, () => console.log(`Server is running on port ${port}`));
+    })
     .catch(err => console.log(err));
-
-// middlewares
-app.use(cors());
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-
-// route middleware
-app.use('/api', postRoutes);
-app.use('/api', authRoutes);
-app.use('/api', userRoutes);
-
-// port
-const port = process.env.PORT || 8888;
-app.listen(port, () => console.log(`Server is running on port ${port}`));
+    
+    module.exports = app; 
