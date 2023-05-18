@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import Grid from "./grid/PathfindingVisualizer";
 import {useState, useEffect} from "react";
 
@@ -66,15 +67,18 @@ export class Algorithms extends Component {
     }
   }
 
+  getStateOfObstacle(){
+    return this.state.object;
+  }
+
   render() {
     return (
-      <div className="bodyAlgorithm">
+      <div className="bodyAlgorithm" data-testid = "custom">
         <button onClick={() => this.setState({ object :"wall" })}> Add Wall </button>
         <button onClick={() => this.setState({ object: "stop" })}> Add Stop </button>
         <button onClick={() => this.setState({ pressed: true })}> Start </button>
         <DropDown className="meniu" object = {this.state.object}></DropDown>
         <Grid algorithm = {algo} object = {this.state.object} pressed = {this.state.pressed}></Grid>
-        {this.state.pressed = false}
       </div>
     );
   }

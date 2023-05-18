@@ -64,14 +64,14 @@ export default class PathfindingVisualizer extends Component {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
           this.animateShortestPath(nodesInShortestPathOrder, lastAmount);
-        }, 50 * (i+1 + lastAmount));
+        }, 10 * (i+1 + lastAmount));
         return;
       }
       setTimeout(() => {
         const node = visitedNodesInOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           'node node-visited';
-      }, 50 * (i+1 + lastAmount));
+      }, 10 * (i+1 + lastAmount));
     }
   }
 
@@ -169,6 +169,7 @@ displayAlgorithm(algorithm){
       finishNode = newGrid[FINISH_NODE_ROW][FINISH_NODE_COL];
       lastAmount = this.checkAlgo(algorithm, startNode, finishNode, lastAmount);
   }
+  //this.props.pressed = false;
 }
 
   render() {
@@ -176,9 +177,11 @@ displayAlgorithm(algorithm){
     const {
       algorithm
     } = this.props;
+  
     return (
       <>
-        <div className="boxGrid">
+      
+        <div className="boxGrid" data-testid="custom-element">
           {grid.map((row, rowIdx) => {
             return (
               <div key={rowIdx}>
@@ -201,12 +204,11 @@ displayAlgorithm(algorithm){
                       row={row}></Node>
                   );
                 })}
+                {this.displayAlgorithm(algorithm)}
               </div>
             );
           })}
-          {
-            this.displayAlgorithm(algorithm)
-          }
+          
         </div>
       </>
     );
@@ -277,3 +279,5 @@ const getNewGridWithStopToggled = (grid, row, col) => {
   newGrid[row][col] = newNode;
   return regenerateGrid(newGrid);
 };
+
+export {getInitialGrid, createNode, getNewGridWithStopToggled, getNewGridWithWallToggled};
