@@ -39,10 +39,6 @@ mongoose
         app.listen(port, () => console.log(`Server is running on port ${port}`));
     })
     .catch(err => console.log(err));
-<<<<<<< HEAD
-    
-    module.exports = app; 
-=======
 
 // middlewares
 app.use(cors());
@@ -56,4 +52,3 @@ app.use('/api', authRoutes);
 // port
 const port = process.env.PORT || 9000;
 app.listen(port, () => console.log(`Server is running on port ${port}`));
->>>>>>> d765ea9 (Added Unit Tests)
